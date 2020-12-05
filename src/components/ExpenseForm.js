@@ -15,7 +15,7 @@ class ExpenseForm extends Component {
     this.state = {
       description: props.expense ? props.expense.description : "",
       note: props.expense ? props.expense.note : "",
-      amount:props.expense ? (props.expense.amount/100).toString() : "",
+      amount: props.expense ? (props.expense.amount / 100).toString() : "",
       createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
       calenderFocused: false,
       error: "",
@@ -55,18 +55,16 @@ class ExpenseForm extends Component {
 
     if (!this.state.description || !this.state.amount) {
       // Set error state equal to 'Please provide description and amount'
-      this.setState(()=> ({error: "Please provide description and amount"})); 
+      this.setState(() => ({ error: "Please provide description and amount" }));
     } else {
       // clear the error
-      this.setState(() => ({error: ""}))
+      this.setState(() => ({ error: "" }));
       this.props.onSubmit({
         description: this.state.description,
         amount: parseFloat(this.state.amount, 10) * 100,
         createdAt: this.state.createdAt.valueOf(),
-        note: this.state.note
-
-      })
-      console.log("submitted");
+        note: this.state.note,
+      });
     }
   }
 
