@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import moment from 'moment'
 
 import ExpenseForm from '../../components/ExpenseForm'
 import expenses from '../fixtures/expenses'
@@ -60,4 +61,40 @@ test('should set amount if invalid input', () => {
   const wrapper = shallow(<ExpenseForm />)
   wrapper.find('input').at(1).simulate('change',{target:{value}})
   expect(wrapper.state('amount')).toBe('')
+})
+
+// 🧪 mock functions
+test('should call onSubmit prop for valid form submission', () => {
+  const onSubmitSpy = jest.fn()
+  const wrapper = shallow(<ExpenseForm expense={expenses[0]} onSubmit={onSubmitSpy} />)
+  wrapper.find ('form').simulate('submit', {
+    preventDefault:()=>{}
+  })
+  expect(wrapper.state('error')).toBe('')
+  expect(onSubmitSpy).toHaveBeenLastCalledWith({
+    description: expenses[0].description,
+    amount: expenses[0].amount,
+    note: expenses[0].note,
+    createdAt:expenses[0].createdAt
+  })
+
+
+  // example lines ⬇️
+  // const onSubmitSpy = jest.fn();
+  // onSubmitSpy('Andrew','philedelphia')
+  // expect(onSubmitSpy).toHaveBeenCalledWith('Andrew','philedelphia')
+})
+
+test('should set new date on date change', () => {
+  const now = moment()
+  const wrapper = shallow(<ExpenseForm />)
+  wrapper.find('withStyles(SingleDatePicker)').prop('onDateChange')(now);
+  expect(wrapper.state('createdAt')).toEqual(now)
+})
+
+test('should set calender focus on change', () => {
+  const focused = true;
+  const wrapper = shallow(<ExpenseForm />)
+  wrapper.find('withStyles(SingleDatePicker)').prop('onFocusChange')({focused});
+  expect(wrapper.state('calenderFocused')).toBe(focused)
 })
