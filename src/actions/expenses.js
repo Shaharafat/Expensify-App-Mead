@@ -3,7 +3,7 @@ import database from "../firebase/firebase";
 // ADD_EXPENSE
 export const addExpense = (expense = {}) => ({
   type: "ADD_EXPENSE",
-  expense
+  expense,
 });
 
 export const startAddExpenses = (expenseData = {}) => {
@@ -16,7 +16,7 @@ export const startAddExpenses = (expenseData = {}) => {
     } = expenseData;
     const expense = { description, note, amount, createdAt };
 
-    database
+    return database
       .ref("expenses")
       .push(expense)
       .then((ref) => {
