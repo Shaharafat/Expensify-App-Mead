@@ -21,7 +21,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       "process.env.FIREBASE_API_KEY": JSON.stringify(
         process.env.FIREBASE_API_KEY
       ),
