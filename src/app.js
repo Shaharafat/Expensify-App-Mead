@@ -5,23 +5,15 @@ import { Provider } from "react-redux";
 import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from "./store/configureStore";
 import { firebase } from "./firebase/firebase";
+import { login, logout } from './actions/auth'
 
 import "../node_modules/normalize.css/normalize.css";
 import "./styles/styles.scss";
 import "react-dates/lib/css/_datepicker.css";
 
 import { startSetExpenses } from "./actions/expenses";
-import { addExpense } from "./actions/expenses";
-import getVisibleExpenses from "./selectors/expenses";
-
 const store = configureStore();
 
-store.dispatch(addExpense({ description: "Water bill", amount: 4500 }));
-store.dispatch(addExpense({ description: "Gas bill", createdAt: 1000 }));
-store.dispatch(addExpense({ description: "Rent", amount: 10900 }));
-
-const state = store.getState();
-const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
 let hasRendered = false;
 
 const renderApp = () => {
@@ -36,10 +28,12 @@ const jsx = (
     <AppRouter />
   </Provider>
 );
+
 ReactDOM.render(<p>Loading...</p>, document.getElementById("app"));
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
+    store.dispatch(login(user.uid))
     store.dispatch(startSetExpenses()).then(() => {
       renderApp()
       if (history.location.pathname === '/') {
@@ -47,9 +41,8 @@ firebase.auth().onAuthStateChanged((user) => {
       }
     });
   } else {
+    store.dispatch(logout())
     renderApp()
     history.push("/");
   }
 });
-
-console.log(hasRendered);
