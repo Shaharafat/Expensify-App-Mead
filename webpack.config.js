@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "test") {
 }
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: "./src/app.js",
   output: {
     path: path.join(__dirname, "public", "dist"),
@@ -72,7 +72,7 @@ module.exports = {
       },
     ],
   },
-  devtool: "source-map",
+  devtool: "inline-source-map",
   devServer: {
     contentBase: path.join(__dirname, "public"),
     historyApiFallback: true,
