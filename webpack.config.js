@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "test") {
 
 module.exports = {
   mode: "development",
-  entry: "./src/app.js",
+  entry: ["@babel/polyfill","./src/app.js"],
   output: {
     path: path.join(__dirname, "public", "dist"),
     filename: "bundle.js",
@@ -49,7 +49,7 @@ module.exports = {
     rules: [
       {
         loader: "babel-loader",
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
       },
       {
@@ -67,6 +67,14 @@ module.exports = {
             options: {
               sourceMap: true,
             },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: "file-loader",
           },
         ],
       },
