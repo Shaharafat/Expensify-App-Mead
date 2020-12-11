@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "test") {
 }
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: ["@babel/polyfill","./src/app.js"],
   output: {
     path: path.join(__dirname, "public", "dist"),
@@ -80,7 +80,7 @@ module.exports = {
       },
     ],
   },
-  devtool: "inline-source-map",
+  devtool: "source-map",
   devServer: {
     contentBase: path.join(__dirname, "public"),
     historyApiFallback: true,
